@@ -26,53 +26,80 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
-  int _counter = 0;
+List tasks = [
+  {'title' : 'Todo App',
+   'subtitle': "Hello this is subtitle !",
+   'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
+  {'title' : 'Todo App', 'subtitle': "Hello this is subtitle !" ,'isDone' : false},
 
 
+];
 
-
-  void _incrementCounter() {
-    setState(() {
-              _counter++;
-
-    });
-   
-        if (kDebugMode) {
-          print(_counter.toString());
-        }
-
+@override
+  void initState() {
+if (kDebugMode) {
+  print('HELLO FROM HOME INIT')   ;
+} super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-       
+
         title: Text(widget.title),
       ),
-      body: Center(
-    
-        child: Row(
-  
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body:
+  DefaultTabController(
+    length: 2,
+    child: Column(
+      children: [
+        const TabBar(
+        labelColor: Colors.black,
+        tabs:  [
+          Tab(
+            text: 'Waiting',
+            
+          ),
+           Tab(
+            text: 'Done',
+            
+          ),
+        ]
+        
+      
         ),
-      ),
+  
+  Expanded(child: TabBarView(children:  [       ListView.builder(
+        itemCount:  tasks.length,
+        shrinkWrap: true,
+  
+         itemBuilder: (context , index){
+        return ListTile(
+        title: Text(tasks[index]['title'] , ),
+        subtitle:  Text(tasks[index]['subtitle'] , style:  TextStyle( color: Colors.black38 , decoration: tasks[index]['isDone']  ? TextDecoration.lineThrough : TextDecoration.none ), ),
+        trailing: Checkbox(value: tasks[index]['isDone'] ,
+        onChanged: (value){
+   setState(() {
+        tasks[index]['isDone'] = !tasks[index]['isDone']  ;
+        });
+        }, ),);
+  
+         },
+         ),
+     const Center(child: Text('DONE'),)] ))
+    ],
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), 
+
+    ),
+
+  
+  )
     );
   }
 }
