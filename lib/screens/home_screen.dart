@@ -1,3 +1,5 @@
+import 'package:byte_todos/models/task_model.dart';
+import 'package:byte_todos/widgets/task_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController subTitleController = TextEditingController();
 
-  List tasks = [];
+  List<TaskModel> tasks = [];
 
   @override
   void initState() {
@@ -74,48 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: tasks.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return selectedStatus == tasks[index]['isDone']
-                    ? ListTile(
-                        title: Text(
-                          tasks[index]['title'],
-                          style: TextStyle(
-                              decoration: tasks[index]['isDone']
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              tasks[index]['subtitle'].toString(),
-                              style: TextStyle(
-                                  decoration: tasks[index]['isDone']
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none),
-                            ),
-                            Text(
-                              tasks[index]['created_at']
-                                  .toString()
-                                  .substring(0, 10)
-                                  .replaceAll('-', '/'),
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 13,
-                                  decoration: tasks[index]['isDone']
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none),
-                            ),
-                          ],
-                        ),
-                        trailing: Checkbox(
-                          value: tasks[index]['isDone'],
-                          onChanged: (value) {
-                            setState(() {
-                              tasks[index]['isDone'] = !tasks[index]['isDone'];
-                            });
-                          },
-                        ),
-                      )
+                return selectedStatus == tasks[index].isDone
+                    ? TaskCard(taskModel: tasks[index])
                     : Container();
               },
             ),
@@ -167,13 +129,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                     subTitleController.text.isNotEmpty) {
                                   setState(() {
                                     tasks.add(
-                                      {
-                                        'title': titleController.text,
-                                        'subtitle': subTitleController.text,
-                                        'isDone': false,
-                                        "created_at": DateTime.now()
-                                      },
-                                    );
+                                        // {
+                                        //   'title': titleController.text,
+                                        //   'subtitle': subTitleController.text,
+                                        //   'isDone': false,
+                                        //   "created_at": DateTime.now()
+                                        // },
+                                        TaskModel(
+                                            title: titleController.text,
+                                            subtile: subTitleController.text,
+                                            isDone: false,
+                                            createdAt: DateTime.now()));
                                   });
                                   titleController.clear();
                                   subTitleController.clear();
